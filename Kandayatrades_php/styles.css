@@ -1,0 +1,697 @@
+/* Seller profile modal close button */
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    margin: 0 0 0 0;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: #f3f3f3;
+    color: #333;
+    font-size: 1.7em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-close-btn:hover {
+    background: #e74c3c;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(231,76,60,0.15);
+}
+/* Seller profile modal avatar */
+.profile-avatar {
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+/* Seller avatar styling */
+.seller-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* Seller profile modal */
+#seller-profile-modal {
+    animation: fadeInModal 0.3s;
+}
+@keyframes fadeInModal {
+    from { opacity: 0; transform: scale(0.95) translate(-50%, -50%); }
+    to { opacity: 1; transform: scale(1) translate(-50%, -50%); }
+}
+/* General Styles */
+/*
+    Fonts: using local project fonts under /fonts/. Place the following files in:
+        - fonts/MckleyBlack.woff2
+        - fonts/MckleyBlack.woff (optional)
+        - fonts/DrukText-Medium-Trail.woff2
+        - fonts/DrukText-Medium-Trail.woff (optional)
+    If you don't have the files yet, I can add a small placeholder SVG avatar or help wire real font files.
+*/
+
+@font-face {
+        font-family: 'MuckleyBlack';
+        src: url('MuckleyBlack-rveK8.ttf') format('ttf'),
+                 url('MuckleyBlack-rveK8.ttf') format('woff');
+        font-weight: 900;
+        font-style: normal;
+        font-display: swap;
+}
+
+@font-face {
+        font-family: 'DrukText-Medium-Trail';
+        src: url('DrukText-Medium-Trial.otf') format('otf'),
+                 url('fonts/DrukText-Medium-Trail.woff') format('woff');
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+}
+
+body {
+        /* Prefer the bundled DrukText font, fall back to system fonts */
+        font-family: 'DrukText-Medium-Trail', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #F0EAD6; /* Eggshell */
+        color: #333; /* readable default text color */
+}
+
+/* Soft page background image used on main pages (home, categories, about, sellers, account).
+   This is an underlay applied to #content when `bg-image` class is set. It uses low opacity
+   and blur for a subtle decorative effect without affecting readability. */
+#content.bg-image::before {
+    content: '';
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* clearer: slightly less blur and higher opacity */
+    filter: blur(3px) saturate(120%);
+    opacity: 0.12; /* stronger but still subtle */
+    z-index: 0; /* behind content */
+    pointer-events: none;
+    transition: opacity 280ms ease, filter 280ms ease;
+}
+
+/* Use body-bg as a fallback/primary: attach the decorative background to the document body
+   so it always covers the entire viewport (including behind the navbar). It sits behind
+   content via a negative z-index. */
+body.bg-image::before {
+    content: '';
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: blur(3px) saturate(120%);
+    opacity: 0.14;
+    z-index: -1; /* behind all page content */
+    pointer-events: none;
+    transition: opacity 280ms ease, filter 280ms ease;
+}
+
+/* Ensure content sits above the decorative background overlay */
+#content { position: relative; z-index: 1; }
+
+/* For modal we keep the stronger overlay as before, so no changes needed there. */
+
+/* Modal Styles */
+.modal {
+    background-color: rgba(0,0,0,0.5);
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* animation timing variable */
+:root {
+    --anim-duration: 420ms;
+}
+
+/* Modal exit animation: translate up and fade out */
+.modal {
+    transition: transform var(--anim-duration) ease, opacity var(--anim-duration) ease;
+}
+.modal.modal-exit {
+    transform: translateY(-30px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background-color: #F0EAD6;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    color: #333; /* Dark for readability */
+}
+
+.modal-content input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content button {
+    background-color: #8B4513; /* Darker brown */
+    color: #F0EAD6;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Sign up link styling (CTA) inside the modal */
+.modal-content #show-signup-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 6px 12px;
+    background: #e09661;
+    color: #F0EAD6;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+.modal-content #show-signup-link:hover {
+    color:  rgb(63, 63, 63);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.22);
+    background: #f3eae2;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #8B4513; /* Darker brown */
+    padding: 10px 0;
+    position: sticky; /* keep navbar visible at top while scrolling */
+    top: 0;
+    z-index: 1200;
+    backdrop-filter: blur(4px) saturate(120%);
+    -webkit-backdrop-filter: blur(4px) saturate(120%);
+    box-shadow: 0 6px 18px rgba(11,10,8,0.12);
+    transition: box-shadow 260ms ease, transform 200ms ease;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo {
+    font-family: 'MuckleyBlack', sans-serif;
+    color: #F0EAD6;
+    font-size: 60px;
+    padding-top: 10px;
+    margin: 0;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    position: relative;
+}
+
+.nav-menu a {
+    color: #F0EAD6;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+}
+
+/* Smooth hover & underline animation for nav links */
+.nav-menu a {
+    color: #F0EAD6;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    position: relative;
+    transition: transform 180ms ease, background-color 200ms ease, color 180ms ease;
+    will-change: transform, background-color;
+}
+
+.nav-menu a::after {
+    /* underline that grows on hover */
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 6px;
+    height: 2px;
+    background: rgba(240,234,214,0.9);
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 220ms cubic-bezier(.2,.9,.2,1);
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+.nav-menu a:hover::after,
+.nav-menu a:focus::after {
+    transform: scaleX(1);
+}
+
+.nav-menu a:hover {
+    background-color: rgba(240, 234, 214, 0.12);
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+/* Logout link styling */
+.nav-menu a#logout-link {
+    font-weight: 700;
+    border-left: 1px solid rgba(240,234,214,0.15);
+}
+
+/* Dropdown */
+.dropdown-content {
+    /* animate dropdown so it fades/slides into view */
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 220ms ease, transform 220ms ease;
+    position: absolute;
+    background-color: #8B4513;
+    min-width: 160px;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 6px;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+    padding: 6px 0;
+}
+
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 8px 12px;
+    transition: background 140ms ease, transform 160ms ease;
+}
+.dropdown-content a:hover {
+    background: rgba(240,234,214,0.08);
+    transform: translateX(4px);
+}
+
+/* Content Sections */
+/* Main page entrance animation */
+#main-page {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--anim-duration) ease, transform var(--anim-duration) ease;
+}
+
+/* Ensure page content doesn't hide under sticky navbar on small screens */
+#content {
+    padding-top: 8px; /* small breathing room under navbar */
+}
+
+#main-page.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section {
+    /* Keep sections in flow but visually hidden by default so we can animate them */
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(22px);
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 360ms cubic-bezier(.2,.9,.2,1), transform 360ms cubic-bezier(.2,.9,.2,1), max-height 420ms ease;
+    will-change: opacity, transform;
+    transform-origin: center top;
+}
+
+.section.active {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 2000px; /* large enough for content */
+}
+
+/* General form controls styling for Account and Sellers */
+#account input, #account select, #account textarea,
+#sellers input, #sellers select, #sellers textarea,
+#product-form input, #product-form select, #product-form textarea,
+#profile-edit input, #profile-edit textarea {
+    width: 97.5%;
+    padding: 10px 12px;
+    margin: 8px 0;
+    border: 1px solid #d6c4b0;
+    border-radius: 8px;
+    background: #fffaf4;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+    font-size: 14px;
+}
+
+#account button, #sellers button, #product-list button, #post-product-btn, #profile-edit button, #profile-view button {
+    background-color: #8B4513;
+    color: #F0EAD6;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#account button:hover, #sellers button:hover, #post-product-btn:hover, #profile-edit button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* Account box and be-seller box styling */
+#account-info, #be-seller-box, #seller-profile {
+    background: linear-gradient(180deg,#fffaf4, #f6efe6);
+    border: 1px solid rgba(139,69,19,0.08);
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+#be-seller-box form > input, #be-seller-box form > textarea {
+    margin-bottom: 6px;
+}
+
+/* Favorites list styling */
+#favorites-list {
+    list-style: none;
+    padding: 0;
+}
+#favorites-list li {
+    padding: 8px;
+    border-radius: 8px;
+    background: #fff;
+    margin: 6px 0;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.section h2 {
+    color: #333; /* Dark for readability */
+}
+
+/* Sellers Page Styles */
+#post-form {
+    margin-top: 20px;
+}
+
+/* Home product card styling */
+#home-product-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+#home-product-list li {
+    background: linear-gradient(180deg, #fff, #fffaf4);
+    border: 1px solid rgba(0,0,0,0.04);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    box-shadow: 0 8px 22px rgba(11,10,8,0.06);
+}
+
+#home-product-list img { max-width: 84px; height: 84px; object-fit: cover; border-radius: 8px; }
+
+.home-product-info { flex: 1; }
+.home-product-info strong { display: block; margin-bottom: 6px; font-size: 16px; color: #222; }
+.home-product-info small { color: #666; }
+
+.home-product-actions { display:flex; flex-direction:column; gap:8px; align-items:flex-end; }
+.buy-button {
+    background: #2e7d32; /* green buy button */
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+}
+.buy-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+.home-like-btn { background: transparent; border: 1px solid rgba(0,0,0,0.06); padding:6px 10px; border-radius:6px; }
+
+/* Notifications list styling */
+#notifications-list li { background: #fffaf4; padding:8px; margin-bottom:6px; border-radius:6px; border:1px solid rgba(139,69,19,0.06); }
+#clear-notifications-btn { background:#8B4513; color:#F0EAD6; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; }
+
+/* Category product list styling (smooth card design) */
+.category-product-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-product-list li {
+    background: linear-gradient(180deg, #fffaf4, #fff7f0);
+    border: 1px solid rgba(139,69,19,0.08);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+    box-shadow: 0 8px 28px rgba(11,10,8,0.06);
+}
+.category-product-list li:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 44px rgba(11,10,8,0.08);
+}
+
+.category-product-list img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.category-product-meta {
+    flex: 1;
+    color: #3b2a1f;
+}
+.category-product-meta strong { display:block; font-size:16px; margin-bottom:8px; font-weight:800; }
+.category-product-actions { display:flex; gap:10px; align-items:center; }
+
+/* Category buttons: boxy, larger, consistent with seller styling */
+.category-product-actions .buy-button { 
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+}
+.category-product-actions .home-like-btn { 
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    border: 1px solid rgba(107,63,35,0.12);
+    background: transparent;
+    color: #6b3f23;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.category-product-actions .home-like-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(11,10,8,0.08);
+}
+
+#product-form input, #product-form select, #product-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#product-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* Seller product cards: layout and sizing to fit content cleanly */
+/* Seller product cards: smoother, boxy card design */
+#product-list li {
+    background: linear-gradient(180deg, #fffaf4, #fff7f0);
+    border: 1px solid rgba(139,69,19,0.08);
+    padding: 18px; /* increased padding for larger feel */
+    margin: 14px 0;
+    border-radius: 14px;
+    display: flex;
+    gap: 18px; /* more gap between image and content */
+    align-items: center;
+    justify-content: space-between;
+    color: #3b2a1f; /* dark brown text for contrast */
+    box-shadow: 0 12px 32px rgba(11,10,8,0.07);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+/* subtle lift on hover */
+#product-list li:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 48px rgba(11,10,8,0.10);
+}
+
+/* Image sizing inside seller cards (larger) */
+#product-list li img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+/* Main content block (title, category, price, description) */
+#product-list li > div {
+    flex: 1 1 auto;
+    min-width: 0; /* allows text to wrap and truncate inside flex */
+}
+
+#product-list li > div small,
+#product-list li > div em {
+    display: block;
+    color: rgba(59,42,31,0.9);
+}
+
+#product-list li > div em {
+    margin-top: 8px;
+    max-height: 4.2em; /* allow ~3-4 lines with larger font */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Actions column (right side) */
+#product-list li > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+/* Prevent buttons from wrapping inside tight cards */
+#product-list button, .category-product-actions button, .home-product-actions button {
+    white-space: nowrap;
+}
+
+/* Seller avatar in listings */
+.seller-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Generic seller buttons: boxy, pill-like, elevated on hover */
+#product-list button {
+    background: transparent;
+    color: #6b3f23; /* brown text */
+    border: 1px solid rgba(107,63,35,0.12);
+    padding: 10px 14px; /* bigger, easier to tap */
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 15px; /* larger label text */
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+#product-list button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(11,10,8,0.09);
+}
+
+/* Delete button: standout red solid box */
+#product-list button:not([id^="like-btn-"]) {
+    background: #f44336;
+    color: #fff;
+    border: none;
+    padding: 10px 14px; /* match sizing */
+    border-radius: 12px;
+}
+
+/* Like button style */
+button[id^="like-btn-"] {
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.08);
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button.liked {
+    background: rgba(255,0,0,0.08);
+    border-color: rgba(255,0,0,0.2);
+    color: #b00000;
+}
+
+/* Image preview in product form */
+#image-preview {
+    display: block;
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Make sizing predictable */
+*, *::before, *::after { box-sizing: border-box; }
